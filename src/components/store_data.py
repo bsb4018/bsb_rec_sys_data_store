@@ -2,7 +2,7 @@ import os, sys
 from src.exception.custom_exception import DataException
 import pandas as pd
 from src.logger.logger import logging
-from src.constants.file_constants import INTERACTIONS_CSV_FILEPATH, INTERACTIONS_PARQUET_FILEPATH, COURSES_CSV_FILEPATH 
+from src.constants.file_constants import INTERACTIONS_CSV_FILEPATH, INTERACTIONS_PARQUET_FILEPATH, COURSES_CSV_FILEPATH,COURSES_PARQUET_FILEPATH
 
 class StoreData:
     '''
@@ -24,29 +24,54 @@ class StoreData:
         except Exception as e:
             raise DataException(e,sys)
 
-    def store_courses(self, df:pd.DataFrame):
+    def store_courses_data(self, item_dict: dict):
         '''
         Putting the incoming courses data from app through api into our data warehouse
         '''
         try:
-            #df.head(5)
+            logging.info("Into the store_courses_data function of StoreData class")
+
             #Create current timestamp for the interaction
-            #current_timestamp = pd.Timestamp.utcnow() 
+            logging.info("Getting current UTC Timestamp")
+            current_timestamp = pd.to_datetime('now',utc=True)
 
-            #Load old courses data and create new id
-            #old_courses_data = pd.read_csv("courses_data.csv")
-            #lastest_course_id = old_courses_data["interaction_id"].iat[-1]
-            #new_course_id = lastest_course_id + 1
+            logging.info("Loading Old File")
+            old_courses_data = pd.read_csv(COURSES_CSV_FILEPATH)
+            lastest_course_id =  old_courses_data["course_id"].iat[-1]
+            new_course_id = lastest_course_id + 1
 
-            #Insert ID and timestamp Information
-            #new_courses_df = df
-            #new_courses_df.insert(loc = 0,column = 'course_id',value = new_course_id)
-            #new_courses_df.insert(loc = 2,column = 'timestamp',value = current_timestamp)
+            lastest_course_feature_id =  old_courses_data["course_feature_id"].iat[-1]
+            new_course_feature_id = lastest_course_feature_id + 1
 
-            #Create new data information and put in in our table        
-            #old_courses_data = pd.concat([old_courses_data,new_courses_df], axis=0)
-            #old_courses_data.to_parquet(path="D:/work2/course_recommend_app/cr_data_collection/data/old_courses_data.parquet")
-            pass
+
+            new_course = {
+                "course_id": [new_course_id],
+                "course_name": [str(item_dict["course_name"])],
+                "web_dev": [item_dict["web_dev"]],
+                "data_sc": [item_dict["data_sc"]],
+                "data_an": [item_dict["data_an"]],
+                "game_dev": [item_dict["game_dev"]],
+                "mob_dev": [item_dict["mob_dev"]],
+                "program": [item_dict["program"]],
+                "cloud": [item_dict["cloud"]],
+                "course_feature_id": [new_course_feature_id]
+            }
+            new_course_df = pd.DataFrame(new_course)
+            new_course_df.insert(loc = 2,column = 'timestamp',value = current_timestamp)
+
+            logging.info("Creating the new data")
+            old_courses_data = pd.concat([old_courses_data,new_course_df], axis=0)
+
+            logging.info("Saving the new data in csv")
+            old_courses_data.to_csv(COURSES_CSV_FILEPATH, index=False)
+
+            logging.info("Storing new data in parquet")
+            dfd = pd.read_csv(COURSES_CSV_FILEPATH)
+            dfd["timestamp"] = pd.to_datetime(dfd["timestamp"], utc=True)
+            dfd.to_parquet(COURSES_PARQUET_FILEPATH, index=False)
+
+            logging.info("Exiting the store_courses_data function of StoreData class")
+           
         except Exception as e:
             raise DataException(e,sys)
     

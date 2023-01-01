@@ -37,6 +37,16 @@ class Interaction_Item(BaseModel):
     time_spent: int
     rating: int
 
+class Course_Item(BaseModel):
+    course_name: str
+    web_dev: int
+    data_sc: int
+    data_an: int
+    game_dev: int
+    mob_dev: int
+    program: int
+    cloud: int
+
 # User Details Post Api
 @app.post("/add_user_details")
 def add_user_details(item: Interaction_Item):
@@ -50,6 +60,19 @@ def add_user_details(item: Interaction_Item):
     except Exception as e:
         raise Response(f"Error Occured! {e}")
 
+
+# User Details Post Api
+@app.post("/add_course_details")
+def add_course_details(item: Course_Item):
+    try:
+        
+        item_dict = item.dict()
+        add_user_details = StoreData()
+        add_user_details.store_courses_data(item_dict)
+        return {"Course Data Added Successfully"}
+        
+    except Exception as e:
+        raise Response(f"Error Occured! {e}")
 
 
 if __name__ == "__main__":
