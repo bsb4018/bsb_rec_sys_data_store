@@ -136,4 +136,6 @@ scripts/
 docs_and_images/
 notebooks/
 data/
-offline_data_store/
+rec_sys_fs/
+logs/
+src/components/get_data.py

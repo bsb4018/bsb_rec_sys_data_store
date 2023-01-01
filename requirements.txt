@@ -16,5 +16,6 @@ typing==3.7.4.3
 pytest
 tox
 flake8
-feast
+feast==0.21.3
+#feast[redis]==0.21.3
 -e.
