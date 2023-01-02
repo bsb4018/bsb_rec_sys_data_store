@@ -1,3 +1,4 @@
+'''
 import os, sys
 from src.exception import DataException
 import pandas as pd
@@ -25,5 +26,4 @@ class DataValidation:
             pass
         except Exception as e:
             raise DataException(e,sys)
-
-    
+'''

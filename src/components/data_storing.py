@@ -3,7 +3,6 @@ from src.exception import DataException
 import pandas as pd
 from src.logger import logging
 from src.constants.file_constants import INTERACTIONS_CSV_FILEPATH, INTERACTIONS_PARQUET_FILEPATH, COURSES_CSV_FILEPATH,COURSES_PARQUET_FILEPATH
-from src.components.data_validation import DataValidation
 from csv import writer
 
 class StoreData:
@@ -13,7 +12,8 @@ class StoreData:
     '''
     def __init__(self):
         try:
-            self.data_validation = DataValidation()
+            #self.data_validation = DataValidation()
+            pass
         except Exception as e:
             raise DataException(e,sys)
            
@@ -25,11 +25,13 @@ class StoreData:
             pass
         except Exception as e:
             raise DataException(e,sys)
-
+    
+    
     def store_courses_data(self, item_dict: dict):
         '''
         Putting the incoming courses data from app through api into our data warehouse
         '''
+        
         try:
             logging.info("Into the store_courses_data function of StoreData class")
 
@@ -55,10 +57,23 @@ class StoreData:
             lastest_course_feature_id =  old_courses_data["course_feature_id"].iat[-1]
             new_course_feature_id = lastest_course_feature_id + 1
 
+            tags = ""
+            if item_dict["data_sc"] == 1:
+                tags += "Web Development "
+            if item_dict["data_sc"] == 1:
+                tags += "Data Science "
+            if item_dict['data_an'] == 1:
+                tags += "Data Analysis "
+            if item_dict['game_dev'] == 1:
+                tags += "Game Development "
+            if item_dict['mob_dev'] == 1:
+                tags += "Mobile Development "
+            if item_dict['program'] == 1:
+                tags += "Programming "
+            if item_dict['cloud'] == 1:
+                tags += "Cloud "
 
-            new_course = [new_course_feature_id,new_course_id, str(item_dict["course_name"]),current_timestamp,item_dict["web_dev"], \
-                item_dict["data_sc"],item_dict["data_an"],item_dict["game_dev"],item_dict["mob_dev"],\
-                    item_dict["program"],item_dict["cloud"]]
+            new_course = [new_course_feature_id,new_course_id, str(item_dict["course_name"]),tags,current_timestamp]
             
             with open(COURSES_CSV_FILEPATH, 'a') as f_object:
                 writer_object = writer(f_object)
@@ -77,7 +92,6 @@ class StoreData:
            
         except Exception as e:
             raise DataException(e,sys)
-    
 
     def store_user_course_interactions(self,item_dict: dict):
         '''
@@ -179,5 +193,58 @@ class StoreData:
         except Exception as e:
             raise DataException(e,sys)
     
+    '''
+    def store_courses_data(self, item_dict: dict):
+        
+        #Putting the incoming courses data from app through api into our data warehouse
+        
+        try:
+            logging.info("Into the store_courses_data function of StoreData class")
+
+            #Create current timestamp for the interaction
+            logging.info("Getting current UTC Timestamp")
+            current_timestamp = pd.to_datetime('now',utc=True)
+
+            #data_validation_status = False
+
+            #data_validation_status = self.data_validation.check_courses_validation(item_dict) #return true if everything is valid
+
+            #if data_validation_status == False:
+            #    return False
+                            
+            data_validation_status = True
+
+            logging.info("Loading Old File")
+            count_rows=len(open(COURSES_CSV_FILEPATH).readlines()) 
+            old_courses_data = pd.read_csv(COURSES_CSV_FILEPATH, skiprows=range(1,count_rows-5), header=0)
+            lastest_course_id =  old_courses_data["course_id"].iat[-1]
+            new_course_id = lastest_course_id + 1
+
+            lastest_course_feature_id =  old_courses_data["course_feature_id"].iat[-1]
+            new_course_feature_id = lastest_course_feature_id + 1
+
+
+            new_course = [new_course_feature_id,new_course_id, str(item_dict["course_name"]),current_timestamp,item_dict["web_dev"], \
+                item_dict["data_sc"],item_dict["data_an"],item_dict["game_dev"],item_dict["mob_dev"],\
+                    item_dict["program"],item_dict["cloud"]]
+            
+            with open(COURSES_CSV_FILEPATH, 'a') as f_object:
+                writer_object = writer(f_object)
+                writer_object.writerow(new_course)
+                f_object.close()
+
+            logging.info("Storing new data in parquet")
+            dfd = pd.read_csv(COURSES_CSV_FILEPATH)
+            dfd["timestamp"] = pd.to_datetime(dfd["timestamp"], utc=True)
+            dfd.to_parquet(COURSES_PARQUET_FILEPATH, index=False)
+
+            logging.info("Exiting the store_courses_data function of StoreData class")
+
+            
+            return data_validation_status
+           
+        except Exception as e:
+            raise DataException(e,sys)
+        '''
     
     
