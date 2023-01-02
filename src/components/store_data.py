@@ -38,7 +38,7 @@ class StoreData:
 
             logging.info("Loading Old File")
             count_rows=len(open(COURSES_CSV_FILEPATH).readlines()) 
-            old_courses_data = pd.read_csv(COURSES_CSV_FILEPATH, skiprows=range(1,count_rows-1), header=0)
+            old_courses_data = pd.read_csv(COURSES_CSV_FILEPATH, skiprows=range(1,count_rows-5), header=0)
             lastest_course_id =  old_courses_data["course_id"].iat[-1]
             new_course_id = lastest_course_id + 1
 
@@ -79,7 +79,7 @@ class StoreData:
 
             logging.info("Loading Old File")
             count_rows=len(open(INTERACTIONS_CSV_FILEPATH).readlines()) 
-            old_interactions_data = pd.read_csv(INTERACTIONS_CSV_FILEPATH, skiprows=range(1,count_rows-1), header=0)
+            old_interactions_data = pd.read_csv(INTERACTIONS_CSV_FILEPATH, skiprows=range(1,count_rows-5), header=0)
             lastest_interaction_id =  old_interactions_data["interaction_id"].iat[-1]
             new_interaction_id = lastest_interaction_id + 1
           
