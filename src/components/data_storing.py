@@ -3,6 +3,7 @@ from src.exception import DataException
 import pandas as pd
 from src.logger import logging
 from src.constants.file_constants import INTERACTIONS_CSV_FILEPATH, INTERACTIONS_PARQUET_FILEPATH, COURSES_CSV_FILEPATH,COURSES_PARQUET_FILEPATH
+from src.components.data_validation import DataValidation
 from csv import writer
 
 class StoreData:
@@ -12,11 +13,11 @@ class StoreData:
     '''
     def __init__(self):
         try:
-            pass
+            self.data_validation = DataValidation()
         except Exception as e:
             raise DataException(e,sys)
            
-    def store_user(self, df:pd.DataFrame):
+    def store_user(self, item_dict: dict):
         '''
         Putting the incoming user data from app through api into our data warehouse
         '''
@@ -35,6 +36,15 @@ class StoreData:
             #Create current timestamp for the interaction
             logging.info("Getting current UTC Timestamp")
             current_timestamp = pd.to_datetime('now',utc=True)
+
+            #data_validation_status = False
+
+            #data_validation_status = self.data_validation.check_courses_validation(item_dict) #return true if everything is valid
+
+            #if data_validation_status == False:
+            #    return False
+                            
+            data_validation_status = True
 
             logging.info("Loading Old File")
             count_rows=len(open(COURSES_CSV_FILEPATH).readlines()) 
@@ -61,6 +71,9 @@ class StoreData:
             dfd.to_parquet(COURSES_PARQUET_FILEPATH, index=False)
 
             logging.info("Exiting the store_courses_data function of StoreData class")
+
+            
+            return data_validation_status
            
         except Exception as e:
             raise DataException(e,sys)
@@ -76,6 +89,15 @@ class StoreData:
             #Create current timestamp for the interaction
             logging.info("Getting current UTC Timestamp")
             current_timestamp = pd.to_datetime('now',utc=True)
+
+            #data_validation_status = False
+
+            #data_validation_status = self.data_validation.check_interactions_validation(item_dict) #return true if everything is valid
+
+            #if data_validation_status == False:
+            #    return False
+            
+            data_validation_status = True
 
             logging.info("Loading Old File")
             count_rows=len(open(INTERACTIONS_CSV_FILEPATH).readlines()) 
@@ -151,6 +173,8 @@ class StoreData:
             dfd.to_parquet(INTERACTIONS_PARQUET_FILEPATH, index=False)
 
             logging.info("Exiting the store_user_course_interactions function of StoreData class")
+            
+            return data_validation_status
 
         except Exception as e:
             raise DataException(e,sys)

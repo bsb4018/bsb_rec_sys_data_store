@@ -9,7 +9,7 @@ from fastapi.responses import Response
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 import json
-from src.components.store_data import StoreData
+from src.components.data_storing import StoreData
 from pydantic import BaseModel
 from src.constants.app_constants import APP_HOST,APP_PORT
 
@@ -54,8 +54,11 @@ def add_user_details(item: Interaction_Item):
         
         item_dict = item.dict()
         add_user_details = StoreData()
-        add_user_details.store_user_course_interactions(item_dict)
-        return {"User_Course Interaction Added Successfully"}
+        status = add_user_details.store_user_course_interactions(item_dict)
+        if status == True:
+            return {"User_Course Interaction Added Successfully"}
+        else:
+            return {"Invalid Data Entered"}
         
     except Exception as e:
         raise Response(f"Error Occured! {e}")
@@ -68,8 +71,11 @@ def add_course_details(item: Course_Item):
         
         item_dict = item.dict()
         add_user_details = StoreData()
-        add_user_details.store_courses_data(item_dict)
-        return {"Course Data Added Successfully"}
+        status = add_user_details.store_courses_data(item_dict)
+        if status == True:
+            return {"Course Data Added Successfully"}
+        else:
+            return {"Invalid Data Entered"}
         
     except Exception as e:
         raise Response(f"Error Occured! {e}")
