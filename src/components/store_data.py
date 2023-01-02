@@ -3,6 +3,7 @@ from src.exception.custom_exception import DataException
 import pandas as pd
 from src.logger.logger import logging
 from src.constants.file_constants import INTERACTIONS_CSV_FILEPATH, INTERACTIONS_PARQUET_FILEPATH, COURSES_CSV_FILEPATH,COURSES_PARQUET_FILEPATH
+from csv import writer
 
 class StoreData:
     '''
@@ -44,26 +45,14 @@ class StoreData:
             new_course_feature_id = lastest_course_feature_id + 1
 
 
-            new_course = {
-                "course_id": [new_course_id],
-                "course_name": [str(item_dict["course_name"])],
-                "web_dev": [item_dict["web_dev"]],
-                "data_sc": [item_dict["data_sc"]],
-                "data_an": [item_dict["data_an"]],
-                "game_dev": [item_dict["game_dev"]],
-                "mob_dev": [item_dict["mob_dev"]],
-                "program": [item_dict["program"]],
-                "cloud": [item_dict["cloud"]],
-                "course_feature_id": [new_course_feature_id]
-            }
-            new_course_df = pd.DataFrame(new_course)
-            new_course_df.insert(loc = 2,column = 'timestamp',value = current_timestamp)
-
-            logging.info("Creating the new data")
-            old_courses_data = pd.concat([old_courses_data,new_course_df], axis=0)
-
-            logging.info("Saving the new data in csv")
-            old_courses_data.to_csv(COURSES_CSV_FILEPATH, index=False)
+            new_course = [new_course_feature_id,new_course_id, str(item_dict["course_name"]),current_timestamp,item_dict["web_dev"], \
+                item_dict["data_sc"],item_dict["data_an"],item_dict["game_dev"],item_dict["mob_dev"],\
+                    item_dict["program"],item_dict["cloud"]]
+            
+            with open(COURSES_CSV_FILEPATH, 'a') as f_object:
+                writer_object = writer(f_object)
+                writer_object.writerow(new_course)
+                f_object.close()
 
             logging.info("Storing new data in parquet")
             dfd = pd.read_csv(COURSES_CSV_FILEPATH)
@@ -147,20 +136,12 @@ class StoreData:
 
             weighted_rating = round(weighted_rating, 4)
 
-            new_interaction = {
-                "interaction_id": [new_interaction_id],
-                "user_id": [user_id],
-                "course_id": [find_course_id],
-                "rating": [weighted_rating],
-                "event_timestamp": [current_timestamp]
-            }
-            new_interaction_df = pd.DataFrame(new_interaction)   
+            new_interaction = [new_interaction_id,user_id,find_course_id,weighted_rating,current_timestamp]
 
-            logging.info("Creating the new data")
-            old_interactions_data = pd.concat([old_interactions_data,new_interaction_df], axis=0)
-
-            logging.info("Saving the new data in csv")
-            old_interactions_data.to_csv(INTERACTIONS_CSV_FILEPATH, index=False)
+            with open(INTERACTIONS_CSV_FILEPATH, 'a') as f_object:
+                writer_object = writer(f_object)
+                writer_object.writerow(new_interaction)
+                f_object.close()
 
             logging.info("Storing new data in parquet")
             dfd = pd.read_csv(INTERACTIONS_CSV_FILEPATH)
