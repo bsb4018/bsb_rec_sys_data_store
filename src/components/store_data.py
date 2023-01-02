@@ -1,7 +1,7 @@
 import os, sys
-from src.exception.custom_exception import DataException
+from src.exception import DataException
 import pandas as pd
-from src.logger.logger import logging
+from src.logger import logging
 from src.constants.file_constants import INTERACTIONS_CSV_FILEPATH, INTERACTIONS_PARQUET_FILEPATH, COURSES_CSV_FILEPATH,COURSES_PARQUET_FILEPATH
 from csv import writer
 
