@@ -21,6 +21,8 @@ class StoreData:
         '''
         Putting the incoming user data from app through api into our data warehouse
         '''
+        #save username, genrate user id by checking database, create interest_tags based on entered data, 
+        # create courses taken tags from interactions data** 
         try:
             pass
         except Exception as e:
