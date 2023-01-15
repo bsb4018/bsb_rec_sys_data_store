@@ -4,7 +4,7 @@ import pandas as pd
 from src.logger import logging
 from src.constants.file_constants import INTERACTIONS_CSV_FILEPATH, INTERACTIONS_PARQUET_FILEPATH, COURSES_CSV_FILEPATH,COURSES_PARQUET_FILEPATH
 from csv import writer
-
+from src.configurations.mongo_config import MongoDBClient
 class StoreData:
     '''
     We take courses data, users data, user-course interactions data from apis, put it in proper and required format
@@ -12,6 +12,8 @@ class StoreData:
     '''
     def __init__(self):
         try:
+            self.mongo_client = MongoDBClient()
+            self.connection = self.mongo_client.dbcollection
             #self.data_validation = DataValidation()
             pass
         except Exception as e:
@@ -60,20 +62,29 @@ class StoreData:
             new_course_feature_id = lastest_course_feature_id + 1
 
             tags = ""
-            if item_dict["data_sc"] == 1:
+            if item_dict["web_dev"] == 1:
                 tags += "Web Development "
+                self.connection.insert_one({"category": "web_dev", "course_name": item_dict["course_name"]})
             if item_dict["data_sc"] == 1:
                 tags += "Data Science "
+                self.connection.insert_one({"category": "data_sc", "course_name": item_dict["course_name"]})
             if item_dict['data_an'] == 1:
                 tags += "Data Analysis "
+                self.connection.insert_one({"category": "data_an", "course_name": item_dict["course_name"]})
             if item_dict['game_dev'] == 1:
                 tags += "Game Development "
+                self.connection.insert_one({"category": "game_dev", "course_name": item_dict["course_name"]})
             if item_dict['mob_dev'] == 1:
                 tags += "Mobile Development "
+                self.connection.insert_one({"category": "mob_dev", "course_name": item_dict["course_name"]})
             if item_dict['program'] == 1:
                 tags += "Programming "
+                self.connection.insert_one({"category": "program", "course_name": item_dict["course_name"]})
             if item_dict['cloud'] == 1:
                 tags += "Cloud "
+                self.connection.insert_one({"category": "cloud", "course_name": item_dict["course_name"]})
+
+            self.mongo_client.close()
 
             new_course = [new_course_feature_id,new_course_id, str(item_dict["course_name"]),tags,current_timestamp]
             
