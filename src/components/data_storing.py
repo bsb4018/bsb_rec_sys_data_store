@@ -18,17 +18,17 @@ class StoreData:
             pass
         except Exception as e:
             raise DataException(e,sys)
-           
-    def store_user(self, item_dict: dict):
+          
+    #def store_user(self, item_dict: dict):
         '''
-        Putting the incoming user data from app through api into our data warehouse
+        #Putting the incoming user data from app through api into our data warehouse
         '''
         #save username, genrate user id by checking database, create interest_tags based on entered data, 
         # create courses taken tags from interactions data** 
-        try:
-            pass
-        except Exception as e:
-            raise DataException(e,sys)
+    #    try:
+    #        pass
+    #    except Exception as e:
+    #        raise DataException(e,sys)
     
     
     def store_courses_data(self, item_dict: dict):
@@ -205,6 +205,66 @@ class StoreData:
 
         except Exception as e:
             raise DataException(e,sys)
+
+    def store_courses_data_redshift(self, item_dict: dict):
+        '''
+        Putting the incoming courses data from app through api into our data warehouse
+        '''
+        
+        try:
+            logging.info("Into the store_courses_data_s3 function of StoreData class")
+
+            #Create current timestamp for the interaction
+            #logging.info("Getting current UTC Timestamp")
+            current_timestamp = pd.to_datetime('now',utc=True)
+                            
+            data_validation_status = True
+
+            #logging.info("Loading Old File")
+            
+            #Create / borrow redshift connection
+            #Query the courses database from redshift to get the latest course id
+            #Create the new course id
+            
+            #Forming the data row
+            tags = ""
+            if item_dict["web_dev"] == 1:
+                tags += "Web Development "
+                self.connection.insert_one({"category": "web_dev", "course_name": item_dict["course_name"]})
+            if item_dict["data_sc"] == 1:
+                tags += "Data Science "
+                self.connection.insert_one({"category": "data_sc", "course_name": item_dict["course_name"]})
+            if item_dict['data_an'] == 1:
+                tags += "Data Analysis "
+                self.connection.insert_one({"category": "data_an", "course_name": item_dict["course_name"]})
+            if item_dict['game_dev'] == 1:
+                tags += "Game Development "
+                self.connection.insert_one({"category": "game_dev", "course_name": item_dict["course_name"]})
+            if item_dict['mob_dev'] == 1:
+                tags += "Mobile Development "
+                self.connection.insert_one({"category": "mob_dev", "course_name": item_dict["course_name"]})
+            if item_dict['program'] == 1:
+                tags += "Programming "
+                self.connection.insert_one({"category": "program", "course_name": item_dict["course_name"]})
+            if item_dict['cloud'] == 1:
+                tags += "Cloud "
+                self.connection.insert_one({"category": "cloud", "course_name": item_dict["course_name"]})
+
+            self.mongo_client.close()
+
+            #new_course = [new_course_feature_id,new_course_id, str(item_dict["course_name"]),tags,current_timestamp]
+            
+            #Put the new row into redshift
+    
+
+            logging.info("Exiting the store_courses_data function of StoreData class")
+
+            
+            return data_validation_status
+           
+        except Exception as e:
+            raise DataException(e,sys)
+    
     
     '''
     def store_courses_data(self, item_dict: dict):

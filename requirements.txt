@@ -18,4 +18,6 @@ tox
 flake8
 feast==0.21.3
 #feast[redis]==0.21.3
+psycopg2
+redshift-connector
 -e.
