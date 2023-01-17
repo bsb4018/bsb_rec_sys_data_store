@@ -140,3 +140,4 @@ rec_sys_fs/
 logs/
 src/components/get_data.py
 src/components/store_data_aws.ipynb
+champion_stag/

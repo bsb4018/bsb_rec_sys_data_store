@@ -82,7 +82,7 @@ class StoreData:
 
             #Put the new row into redshift
             redshift_cursor.execute("""INSERT INTO courses (event_timestamp, course_feature_id, course_id,course_name,course_tags)
-            VALUES (%s, %s, %s, %s, %s);""",(current_timestamp, new_course_feature_id, new_course_feature_id, item_dict["course_name"], tags))
+            VALUES (%s, %s, %s, %s, %s);""",(current_timestamp[0], new_course_feature_id, new_course_feature_id, item_dict["course_name"], tags))
             
             logging.info("Exiting the store_courses_data_redshift function of StoreData class")
             return data_validation_status
@@ -171,7 +171,7 @@ class StoreData:
 
             #Put the new row into redshift
             redshift_cursor.execute("""INSERT INTO interactions (interaction_id, user_id, course_id, rating, event_timestamp)
-            VALUES (%s, %s, %s, %s, %s);""",(new_interaction_id, user_id, find_courese_id, weighted_rating,current_timestamp))
+            VALUES (%s, %s, %s, %s, %s);""",(new_interaction_id, user_id, find_courese_id, weighted_rating,current_timestamp[0]))
             
             logging.info("Exiting the store_interactions_data_redshift function of StoreData class")
             return data_validation_status
