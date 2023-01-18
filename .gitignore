@@ -141,3 +141,5 @@ logs/
 src/components/get_data.py
 src/components/store_data_aws.ipynb
 champion_stag/
+infra/
+feature_repo/
