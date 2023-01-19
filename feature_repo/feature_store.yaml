@@ -1,5 +1,5 @@
 project: feature_repo
-registry: data/registry.db
+registry: s3://feast-fs-registries-bsb4018/recommender_sys_app/registry.db
 provider: aws
 online_store:
   type: dynamodb
@@ -12,3 +12,4 @@ offline_store:
   user: admin
   s3_staging_location: s3://rec-sys-feast-stage-bsb4018/redshift/
   iam_role: arn:aws:iam::487410058179:role/s3_spectrum_role
+entity_key_serialization_version: 2

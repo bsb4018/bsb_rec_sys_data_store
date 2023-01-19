@@ -1,5 +1,4 @@
-#feast==0.23.0
-#feast==0.12.1
+feast
 pandas
 scipy
 sklearn

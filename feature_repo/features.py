@@ -3,47 +3,55 @@ from datetime import timedelta
 import pandas as pd
 
 from feast import (Entity, Feature, FeatureView, RedshiftSource,
-                   ValueType)
-
+                   ValueType, Field)
+from feast.types import Int64,Float32,String
 from feast import RedshiftSource
 
 interaction_id = Entity(name = "interaction_id", value_type = ValueType.INT64)
 
 interactions_source = RedshiftSource(
-        query="select * from spectrum.interaction_features",
-        event_timestamp_column="event_timestamp",
+        name="rs_source_interactions",
+        timestamp_field="event_timestamp",
         created_timestamp_column = "created",
+        database="dev",
+        schema="spectrum",
+        table="interaction_features",
+        query='SELECT * FROM "dev"."spectrum"."interaction_features"'
     )
 
 interactions_fv = FeatureView(
     name = "interaction_features",
-    entities = ["interaction_id"],
+    entities = [interaction_id],
     ttl = timedelta(weeks=200),
-    features = [
-        Feature(name = "user_id", dtype =  ValueType.INT64),
-        Feature(name = "course_id", dtype =  ValueType.INT64),
-        Feature(name = "rating", dtype =  ValueType.FLOAT)
+    schema = [
+        Field(name = "user_id", dtype =  Int64),
+        Field(name = "course_id", dtype =  Int64),
+        Field(name = "rating", dtype =  Float32)
         ],
-    batch_source = interactions_source
+    source = interactions_source
 )
 
 
 course_feature_id = Entity(name = "course_feature_id", value_type = ValueType.INT64)
 
 courses_source = RedshiftSource(
-        query="select * from spectrum.course_features",
-        event_timestamp_column="event_timestamp",
+        name = "rs_source_courses",
+        timestamp_field="event_timestamp",
         created_timestamp_column = "created",
+        database="dev",
+        schema="spectrum",
+        table="course_features",
+        query='SELECT * FROM "dev"."spectrum"."course_features"'
     )
 
 courses_fv = FeatureView(
     name = "course_features",
-    entities = ["course_feature_id"],
+    entities = [course_feature_id],
     ttl = timedelta(weeks=200),
-    features = [
-    Feature(name = "course_id", dtype = ValueType.INT64),
-    Feature(name = "course_name", dtype = ValueType.STRING),
-    Feature(name = "course_tags", dtype = ValueType.STRING)
+    schema = [
+    Field(name = "course_id", dtype = Int64),
+    Field(name = "course_name", dtype = String),
+    Field(name = "course_tags", dtype = String)
     ],
-    batch_source = courses_source
+    source = courses_source
 )

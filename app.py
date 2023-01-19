@@ -54,7 +54,7 @@ def add_user_details(item: Interaction_Item):
         
         item_dict = item.dict()
         add_user_details = StoreData()
-        status = add_user_details.store_interactions_data_redshift(item_dict)
+        status = add_user_details.store_user_course_interactions(item_dict)
         if status == True:
             return {"User_Course Interaction Added Successfully"}
         else:
@@ -71,7 +71,7 @@ def add_course_details(item: Course_Item):
         
         item_dict = item.dict()
         add_user_details = StoreData()
-        status = add_user_details.store_courses_data_redshift(item_dict)
+        status = add_user_details.store_courses_data(item_dict)
         if status == True:
             return {"Course Data Added Successfully"}
         else:
