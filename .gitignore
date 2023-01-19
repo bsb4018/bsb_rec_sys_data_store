@@ -141,5 +141,11 @@ logs/
 src/components/get_data.py
 src/components/store_data_aws.ipynb
 champion_stag/
-infra/
-feature_repo/
+
+
+infra/.terraform
+infra/.terraform.lock.hcl
+infra/terraform.tfstate
+infra/terraform.tfstate.backup
+
+feature_repo/data/

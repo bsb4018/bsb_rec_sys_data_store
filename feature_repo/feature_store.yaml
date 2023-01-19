@@ -1,0 +1,14 @@
+project: feature_repo
+registry: data/registry.db
+provider: aws
+online_store:
+  type: dynamodb
+  region: ap-south-1
+offline_store:
+  type: redshift
+  cluster_id: bsb-4018-rec-sys-app-proj-redshift-cluster
+  region: ap-south-1
+  database: dev
+  user: admin
+  s3_staging_location: s3://rec-sys-feast-stage-bsb4018/redshift/
+  iam_role: arn:aws:iam::487410058179:role/s3_spectrum_role
