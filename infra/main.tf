@@ -6,13 +6,13 @@ resource "aws_s3_bucket_acl" "feast_bucket" {
 resource "aws_s3_object" "interaction_features_file_upload" {
   bucket = aws_s3_bucket_acl.feast_bucket.bucket
   key    = "interaction_features/table.parquet"
-  source = "${path.module}/../data/old_interactions_data.parquet"
+  source = "${path.module}/../data-feature/events_all.parquet"
 }
 
 resource "aws_s3_object" "courses_features_file_upload" {
   bucket = aws_s3_bucket_acl.feast_bucket.bucket
   key    = "course_features/table.parquet"
-  source = "${path.module}/../data/courses_data.parquet"
+  source = "${path.module}/../data-feature/courses_data.parquet"
 }
 
 

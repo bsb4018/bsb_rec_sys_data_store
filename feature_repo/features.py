@@ -12,7 +12,6 @@ interaction_id = Entity(name = "interaction_id", value_type = ValueType.INT64)
 interactions_source = RedshiftSource(
         name="rs_source_interactions",
         timestamp_field="event_timestamp",
-        created_timestamp_column = "created",
         database="dev",
         schema="spectrum",
         table="interaction_features",
@@ -26,7 +25,7 @@ interactions_fv = FeatureView(
     schema = [
         Field(name = "user_id", dtype =  Int64),
         Field(name = "course_id", dtype =  Int64),
-        Field(name = "rating", dtype =  Float32)
+        Field(name = "event", dtype =  Int64)
         ],
     source = interactions_source
 )
@@ -37,7 +36,6 @@ course_feature_id = Entity(name = "course_feature_id", value_type = ValueType.IN
 courses_source = RedshiftSource(
         name = "rs_source_courses",
         timestamp_field="event_timestamp",
-        created_timestamp_column = "created",
         database="dev",
         schema="spectrum",
         table="course_features",

@@ -32,10 +32,9 @@ async def index():
 class Interaction_Item(BaseModel):
     user_id: int
     course_taken: str
-    course_progress: int
-    course_like: int
-    time_spent: int
-    rating: int
+    event_viewed: int
+    event_wishlisted: int
+    event_enrolled: int
 
 class Course_Item(BaseModel):
     course_name: str
