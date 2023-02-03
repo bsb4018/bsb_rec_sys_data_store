@@ -1,6 +1,6 @@
 
-from src.constants.cloud_constants import S3_FEATURE_REGISTRY_BUCKET_NAME,S3_ENTITY_DATA_BUCKET_NAME
-from src.constants.file_constants import ENTITY_ROOT_DATA_DIR,FEATURE_STORE_FILE_PATH
+from src.constants.cloud_constants import S3_FEATURE_REGISTRY_BUCKET_NAME
+from src.constants.file_constants import FEATURE_STORE_FOLDER_NAME,FEATURE_STORE_FILE_PATH
 from src.exception import DataException
 from src.logger import logging
 import os,sys
@@ -19,6 +19,7 @@ class DataSync:
     def __init__(self):
         try:
             self.s3_sync = S3Sync()
+            self.feature_store_folder_name = FEATURE_STORE_FOLDER_NAME
             self.feature_registry_folder = FEATURE_STORE_FILE_PATH
         except Exception as e:
             raise DataException(e,sys)
@@ -26,7 +27,7 @@ class DataSync:
     def sync_feature_registries_to_s3(self):
         try:
             logging.info("Entered the sync_feature_registries_to_s3 method of DataSync class")
-            aws_bucket_url = f"s3://{S3_FEATURE_REGISTRY_BUCKET_NAME}/"
+            aws_bucket_url = f"s3://{S3_FEATURE_REGISTRY_BUCKET_NAME}/{self.feature_store_folder_name}"
             self.s3_sync.sync_folder_to_s3(folder = self.feature_registry_folder,aws_buket_url=aws_bucket_url)
             logging.info("Performed Syncing of artifact to S3 bucket")
 
