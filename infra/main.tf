@@ -113,7 +113,19 @@ resource "aws_glue_catalog_table" "interaction_features_table" {
         "serialization.format" = 1
       }
     }
-
+    
+    columns {
+      name = "user_id"
+      type = "BIGINT"
+    }
+    columns {
+      name = "event"
+      type = "BIGINT"
+    }
+    columns {
+      name = "course_id"
+      type = "BIGINT"
+    }
     columns {
       name = "event_timestamp"
       type = "TIMESTAMP"
@@ -122,22 +134,7 @@ resource "aws_glue_catalog_table" "interaction_features_table" {
       name = "interaction_id"
       type = "BIGINT"
     }
-    columns {
-      name = "user_id"
-      type = "BIGINT"
-    }
-    columns {
-      name = "course_id"
-      type = "BIGINT"
-    }
-    columns {
-      name = "rating"
-      type = "FLOAT"
-    }
-    columns {
-      name = "created"
-      type = "TIMESTAMP"
-    }
+    
   }
 }
 
@@ -184,10 +181,6 @@ resource "aws_glue_catalog_table" "course_features_table" {
     columns {
       name = "course_tags"
       type = "VARCHAR(100)"
-    }
-    columns {
-      name = "created"
-      type = "TIMESTAMP"
     }
   }
 }

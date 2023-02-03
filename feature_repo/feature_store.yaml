@@ -1,5 +1,5 @@
 project: feature_repo
-registry: s3://feast-fs-registries-bsb4018/recommender_sys_app/registry.db
+registry: registry.db
 provider: aws
 online_store:
   type: dynamodb

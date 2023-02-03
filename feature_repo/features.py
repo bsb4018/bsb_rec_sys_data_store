@@ -27,7 +27,8 @@ interactions_fv = FeatureView(
         Field(name = "course_id", dtype =  Int64),
         Field(name = "event", dtype =  Int64)
         ],
-    source = interactions_source
+    source = interactions_source,
+    online=False
 )
 
 
@@ -51,5 +52,6 @@ courses_fv = FeatureView(
     Field(name = "course_name", dtype = String),
     Field(name = "course_tags", dtype = String)
     ],
-    source = courses_source
+    source = courses_source,
+    online=True
 )

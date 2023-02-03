@@ -149,5 +149,6 @@ infra/terraform.tfstate
 infra/terraform.tfstate.backup
 infra/.terraform.tfstate.lock.info
 feature_repo/data/
+feature_repo/registry.db
 data-entity/
 data-feature/
