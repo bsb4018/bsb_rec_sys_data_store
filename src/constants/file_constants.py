@@ -16,3 +16,8 @@ ENTITY_INTERACTIONS_PARQUET_FILEPATH = os.path.join(ENTITY_ROOT_DATA_DIR,EINTERA
 
 FEATURE_STORE_FOLDER_NAME = "feature_repo"
 FEATURE_STORE_FILE_PATH = os.path.join(FEATURE_STORE_FOLDER_NAME)
+
+COURSES_S3_FOLDER = "courses_data"
+COURSES_S3_FOLDER_LOCAL = os.path.join("data-download")
+INTERACTIONS_S3_FOLDER = "interactions_data"
+INTERACTIONS_S3_FOLDER_LOCAL = os.path.join("data-download")

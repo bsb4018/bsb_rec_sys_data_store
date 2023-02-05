@@ -6,6 +6,7 @@ from src.constants.file_constants import INTERACTIONS_PARQUET_FILEPATH , COURSES
 from csv import writer
 from src.configurations.mongo_config import MongoDBClient
 from src.components.data_validation import DataValidation
+from src.configurations.aws_s3_config import StorageConnection
 class StoreData:
     '''
     We take courses data, users data, user-course interactions data from apis, put it in proper and required format
@@ -19,10 +20,11 @@ class StoreData:
             self.course_connection = self.mongo_client.course_collection
             #self.reverse_course_connection = self.mongo_client.reverse_courses_collection_name
             self.data_validation = DataValidation()
+            self.storage_connection = StorageConnection()
             pass
         except Exception as e:
             raise DataException(e,sys)
-          
+        
 
     def store_courses_data(self, item_dict: dict):
         
