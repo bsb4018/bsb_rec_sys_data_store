@@ -1,3 +1,4 @@
+'''
 import os, sys
 from src.exception import DataException
 import pandas as pd
@@ -8,10 +9,10 @@ from src.configurations.mongo_config import MongoDBClient
 from src.components.data_validation import DataValidation
 from src.configurations.aws_s3_config import StorageConnection
 class StoreData:
-    '''
-    We take courses data, users data, user-course interactions data from apis, put it in proper and required format
-    (added -> id and timestamp) for storing in our data-warehouse 
-    '''
+    
+    #We take courses data, users data, user-course interactions data from apis, put it in proper and required format
+    #(added -> id and timestamp) for storing in our data-warehouse 
+    
     def __init__(self):
         try:
             self.mongo_client = MongoDBClient()
@@ -262,4 +263,4 @@ if __name__ == "__main__":
 
     print(getdataobj.store_courses_data(courses_data))
     print(getdataobj.store_user_course_interactions(interaction_data))
-   
+'''
