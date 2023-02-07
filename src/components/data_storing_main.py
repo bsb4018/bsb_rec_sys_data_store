@@ -42,8 +42,7 @@ class StoreDataCourse:
             interaction_data['event'] = interaction_data['event'].replace(['viewed'], 1)
             interaction_data['event'] = interaction_data['event'].replace(['wishlisted'], 2)
             interaction_data['event'] = interaction_data['event'].replace(['enrolled'], 3)
-            
-                 
+                   
 
             interaction_data.to_parquet(INTERACTIONS_PARQUET_FILEPATH, index=False)
             #interaction_data.to_parquet("C:/Users/shiv1/OneDrive/Desktop/nmn/events-from-s3.parquet", index=False)
@@ -67,61 +66,46 @@ class StoreDataCourse:
             #data_index = { "id_name":"latest_course_feature_id", "value": number_of_records}
             #self.index_connection.insert_one(data_index)
 
-
-            tags_list = []
-            #course_ids = []
-            #feature_ids = []
-            #course_id_counter = 0
             for index,row in courses_features.iterrows():
-                tags = ""
-                if row["web_dev"] == 1:
-                    tags += "Web Development "
-                    #self.connection.insert_one({"category": "web_dev", "course_name": row["course_name"]})
+                course_tags = row["course_tags"].split()
+                if "WebDevelopment" in course_tags:
+                    self.connection.insert_one({"category": "web_dev", "course_name": row["course_name"]})
 
-                if row["data_sc"] == 1:
-                    tags += "Data Science "
-                    #self.connection.insert_one({"category": "data_sc", "course_name": row["course_name"]})
+                if "DataScience" in course_tags:
+                    self.connection.insert_one({"category": "data_sc", "course_name": row["course_name"]})
  
-                if row['data_an'] == 1:
-                    tags += "Data Analysis "
-                    #self.connection.insert_one({"category": "data_an", "course_name": row["course_name"]})
+                if "DataAnalysis" in course_tags:
+                    self.connection.insert_one({"category": "data_an", "course_name": row["course_name"]})
                     
-                if row['game_dev'] == 1:
-                    tags += "Game Development "
-                    #self.connection.insert_one({"category": "game_dev", "course_name": row["course_name"]})
+                if "GameDevelopment" in course_tags:
+                    self.connection.insert_one({"category": "game_dev", "course_name": row["course_name"]})
 
-                if row['mob_dev'] == 1:
-                    tags += "Mobile Development "
-                    #self.connection.insert_one({"category": "mob_dev", "course_name": row["course_name"]})
+                if "MobileDevelopment" in course_tags:
+                    self.connection.insert_one({"category": "mob_dev", "course_name": row["course_name"]})
 
-                if row['program'] == 1:
-                    tags += "Programming "
-                    #self.connection.insert_one({"category": "program", "course_name": row["course_name"]})
+                if "Programming" in course_tags:
+                    self.connection.insert_one({"category": "program", "course_name": row["course_name"]})
 
-                if row['cloud'] == 1:
-                    tags += "Cloud "
-                    #self.connection.insert_one({"category": "cloud", "course_name": row["course_name"]})
-
-                tags_list.append(tags)
-                #course_ids.append(course_id_counter)
-                #feature_ids.append(course_id_counter + 1)
+                if "Cloud" in course_tags:
+                    self.connection.insert_one({"category": "cloud", "course_name": row["course_name"]})
                 
-                #self.course_connection.insert_one({"course_name": row["course_name"], "course_id": course_id_counter})
-                
-                #course_id_counter = course_id_counter + 1
+                self.course_connection.insert_one({"course_name": row["course_name"], "course_id": row["course_id"]})
+              
 
-            course_ids = [i for i in range(0,len(courses_features))]
             feature_ids = [i for i in range(1,len(courses_features)+1)]
 
             courses_data = pd.DataFrame()
             courses_data["event_timestamp"] = courses_features["event_timestamp"]
-            courses_data["course_feature_id"] = feature_ids
-            courses_data["course_id"] = course_ids
-            courses_data["course_name"] = courses_features["course_name"]
-            courses_data["course_tags"] = tags_list
             courses_data["event_timestamp"] = pd.to_datetime(courses_data["event_timestamp"])
-
             
+            courses_data["course_feature_id"] = feature_ids
+            courses_data["course_feature_id"] = courses_data["course_feature_id"].astype('int64')
+            
+            courses_data["course_id"] = courses_features["course_id"].astype('int64')
+            courses_data["course_name"] = courses_features["course_name"]
+            courses_data["course_tags"] = courses_features["course_tags"]
+
+
             courses_data.to_parquet(COURSES_PARQUET_FILEPATH, index=False)
             #courses_data.to_parquet("C:/Users/shiv1/OneDrive/Desktop/nmn/courses-from-s3.parquet", index=False)
 
