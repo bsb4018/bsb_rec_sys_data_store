@@ -2,7 +2,7 @@ import os, sys
 from src.exception import DataException
 import pandas as pd
 from src.logger import logging
-from src.constants.file_constants import INTERACTIONS_PARQUET_FILEPATH,COURSES_PARQUET_FILEPATH,INITIAL_DATA_S3_FOLDER_NAME,INITIAL_DATA_LOCAL_FOLDER_NAME
+from src.constants.file_constants import INTERACTIONS_PARQUET_FILEPATH,COURSES_PARQUET_FILEPATH,USERS_PARQUET_FILEPATH,INITIAL_DATA_S3_FOLDER_NAME,INITIAL_DATA_LOCAL_FOLDER_NAME
 #from src.constants.cloud_constants import S3_DATA_BUCKET_NAME
 from csv import writer
 from src.configurations.mongo_config import MongoDBClient
@@ -36,21 +36,52 @@ class StoreDataCourse:
         try:
             path_to_data = os.path.join(INITIAL_DATA_LOCAL_FOLDER_NAME, "events-data-v1.0.0.csv")
             interaction_data = pd.read_csv(path_to_data)
-            interaction_data["event_timestamp"] = pd.to_datetime(interaction_data["event_timestamp"])
-            interaction_ids = [i for i in range(0,len(interaction_data))]
+            interaction_ids = [i for i in range(1,len(interaction_data)+1)]
             interaction_data["interaction_id"] = interaction_ids
             interaction_data['event'] = interaction_data['event'].replace(['viewed'], 1)
             interaction_data['event'] = interaction_data['event'].replace(['wishlisted'], 2)
             interaction_data['event'] = interaction_data['event'].replace(['enrolled'], 3)
 
-            
+            interaction_data["event_timestamp"] = pd.to_datetime(interaction_data["event_timestamp"])
             interaction_data["user_id"] = interaction_data["user_id"].astype('int64')
-            interaction_data["event"] = interaction_data["course_id"].astype('int64')
+            interaction_data["event"] = interaction_data["event"].astype('int64')
             interaction_data["course_id"] = interaction_data["course_id"].astype('int64')
             interaction_data["event_timestamp"] = interaction_data["event_timestamp"].astype('datetime64[ns]')
             interaction_data["interaction_id"] = interaction_data["interaction_id"].astype('int64')
 
             interaction_data.to_parquet(INTERACTIONS_PARQUET_FILEPATH, index=False)
+            #interaction_data.to_parquet("C:/Users/shiv1/OneDrive/Desktop/nmn/events-from-s3.parquet", index=False)
+
+            #number_of_records = len(interaction_data)
+            #data_index = { "id_name":"latest_interaction_id", "value": number_of_records}
+            #self.index_connection.insert_one(data_index)
+            
+        except Exception as e:
+            raise DataException(e,sys)
+
+    def create_and_store_users_data_and_features(self):
+        try:
+            path_to_data = os.path.join(INITIAL_DATA_LOCAL_FOLDER_NAME, "users-data-v1.0.0.csv")
+            user_data = pd.read_csv(path_to_data)
+            user_feature_ids = [i for i in range(1,len(user_data)+1)]
+            user_data["user_feature_id"] = user_feature_ids
+          
+            
+            user_data["user_id"] = user_data["user"].astype('int64')
+            user_data.drop(["user"], axis=1, inplace=True)
+            user_data["prev_web_dev"] = user_data["prev_web_dev"].astype('int64')
+            user_data["prev_data_sc"] = user_data["prev_data_sc"].astype('int64')
+            user_data["prev_data_an"] = user_data["prev_data_an"].astype('int64')
+            user_data["prev_game_dev"] = user_data["prev_game_dev"].astype('int64')
+            user_data["prev_mob_dev"] = user_data["prev_mob_dev"].astype('int64')
+            user_data["prev_program"] = user_data["prev_program"].astype('int64')
+            user_data["prev_cloud"] = user_data["prev_cloud"].astype('int64')
+            user_data["yrs_of_exp"] = user_data["yrs_of_exp"].astype('int64')
+            user_data["no_certifications"] = user_data["no_certifications"].astype('int64')
+            user_data["event_timestamp"] = pd.to_datetime(user_data["event_timestamp"])
+            user_data["event_timestamp"] = user_data["event_timestamp"].astype('datetime64[ns]')
+
+            user_data.to_parquet(USERS_PARQUET_FILEPATH, index=False)
             #interaction_data.to_parquet("C:/Users/shiv1/OneDrive/Desktop/nmn/events-from-s3.parquet", index=False)
 
             #number_of_records = len(interaction_data)
@@ -131,5 +162,6 @@ if __name__ == "__main__":
     getdataobj  =  StoreDataCourse()
     getdataobj.download_data_from_s3()
     getdataobj.create_and_store_interactions_data_and_features()
-    getdataobj.create_and_store_courses_data_and_features()
+    #getdataobj.create_and_store_courses_data_and_features()
+    #getdataobj.create_and_store_users_data_and_features()
    

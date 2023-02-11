@@ -9,12 +9,18 @@ resource "aws_s3_object" "interaction_features_file_upload" {
   source = "${path.module}/../data-feature/events_all.parquet"
 }
 
+/*
 resource "aws_s3_object" "courses_features_file_upload" {
   bucket = aws_s3_bucket_acl.feast_bucket.bucket
   key    = "course_features/table.parquet"
   source = "${path.module}/../data-feature/courses_data.parquet"
 }
-
+*/
+resource "aws_s3_object" "user_features_file_upload" {
+  bucket = aws_s3_bucket_acl.feast_bucket.bucket
+  key    = "user_features/table.parquet"
+  source = "${path.module}/../data-feature/users_data.parquet"
+}
 
 resource "aws_iam_role" "s3_spectrum_role" {
   name = "s3_spectrum_role"
@@ -138,6 +144,83 @@ resource "aws_glue_catalog_table" "interaction_features_table" {
   }
 }
 
+resource "aws_glue_catalog_table" "user_features_table" {
+  name          = "user_features"
+  database_name = var.database_name
+
+  table_type = "EXTERNAL_TABLE"
+
+  parameters = {
+    EXTERNAL              = "TRUE"
+    "parquet.compression" = "SNAPPY"
+  }
+
+  storage_descriptor {
+    location      = "s3://${aws_s3_bucket_acl.feast_bucket.bucket}/user_features/"
+    input_format  = "org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat"
+    output_format = "org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat"
+
+    ser_de_info {
+      name                  = "my-stream"
+      serialization_library = "org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe"
+
+      parameters = {
+        "serialization.format" = 1
+      }
+    }
+   
+    columns {
+      name = "prev_web_dev"
+      type = "BIGINT"
+    }
+    columns {
+      name = "prev_data_sc"
+      type = "BIGINT"
+    }
+    columns {
+      name = "prev_data_an"
+      type = "BIGINT"
+    }
+    columns {
+      name = "prev_game_dev"
+      type = "BIGINT"
+    }
+    columns {
+      name = "prev_mob_dev"
+      type = "BIGINT"
+    }
+    columns {
+      name = "prev_program"
+      type = "BIGINT"
+    }
+    columns {
+      name = "prev_cloud"
+      type = "BIGINT"
+    }
+    columns {
+      name = "yrs_of_exp"
+      type = "BIGINT"
+    }
+    columns {
+      name = "no_certifications"
+      type = "BIGINT"
+    }
+     columns {
+      name = "event_timestamp"
+      type = "TIMESTAMP"
+    }
+     columns {
+      name = "user_feature_id"
+      type = "BIGINT"
+    }
+     columns {
+      name = "user_id"
+      type = "BIGINT"
+    }
+  }
+}
+
+/*
 resource "aws_glue_catalog_table" "course_features_table" {
   name          = "course_features"
   database_name = var.database_name
@@ -184,3 +267,4 @@ resource "aws_glue_catalog_table" "course_features_table" {
     }
   }
 }
+*/
