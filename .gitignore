@@ -140,6 +140,8 @@ rec_sys_fs/
 logs/
 src/components/get_data.py
 src/components/store_data_aws.ipynb
+src/components/data_storing_api.py
+src/components/data_validation.py
 champion_stag/
 
 
@@ -151,5 +153,11 @@ infra/.terraform.tfstate.lock.info
 feature_repo/data/
 feature_repo/registry.db
 data-entity/
-data-feature/
-data-download/
+data-feature/courses_data.parquet
+data-feature/events_all.parquet
+data-feature/users_data.parquet
+data-feature/exp.ipynb
+data-download/courses-data-v1.0.0.csv
+data-download/events-data-v1.0.0.csv
+data-download/users-data-v1.0.0.csv
+data-download/exp1.ipynb
