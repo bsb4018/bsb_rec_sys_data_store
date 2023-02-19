@@ -9,6 +9,5 @@ S3_DATA_BUCKET_NAME = "rec-sys-data-store"
 
 MONGODB_URL_KEY = "MONGO_DB_URL"
 MONGO_DATABASE_NAME = "rec_sys_db"
-MONGO_COLLECTION_NAME =  "courses_tagwise"            #"rev_courses3"
-#MONGO_INDEX_COLLECTION_NAME = "data_index"
-MONGO_COURSES_COLLECTION_NAME = "course_name_id"      #"course_indexing"
+MONGO_COLLECTION_NAME =  "courses_tagwise"         
+MONGO_COURSES_COLLECTION_NAME = "course_name_id"
