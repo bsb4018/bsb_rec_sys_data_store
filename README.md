@@ -50,7 +50,7 @@ pip install -r requirements.txt
 ### Step 4 - Create AWS Account and do the following get the following ids
 ```bash
 Create three S3 bucket with unique names 
-Replace the names accordingly in src/constants/cloud_constants.py 
+Goto src/constants/cloud_constants.py and Replace the names accordingly
 
 Create another S3 bucket with with name bsb-4018-rec-sys-app-proj-<any-unique-key>
 Goto infra/main.tf and replace the name under "aws_s3_bucket_acl" resource
