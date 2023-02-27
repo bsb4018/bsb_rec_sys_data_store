@@ -69,7 +69,7 @@ collection with name "course_name_id"
 Get the MONGODB_URL
 ```
 
-### Step 4 - Export the environment variable
+### Step 6 - Export the environment variable(LINUX) or Put in System Environments(WINDOWS)
 ```bash
 export AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID>
 
@@ -81,12 +81,12 @@ export MONGODB_URL="mongodb+srv://<username>:<password>@cluster.3gdw4s.mongodb.n
 ```
 
 
-### Step 5 - Start locally
+### Step 7 - Start locally
 ```bash
 /bin/bash -c ./start.sh
 ```
 
-### Step 6. Stop locally
+### Step 8 - Stop locally
 ```bash
 /bin/bash -c ./stop.sh
 
