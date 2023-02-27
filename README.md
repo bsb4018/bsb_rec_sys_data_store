@@ -89,7 +89,7 @@ export MONGODB_URL="mongodb+srv://<username>:<password>@cluster.3gdw4s.mongodb.n
 ### Step 8 - Stop locally
 ```bash
 /bin/bash -c ./stop.sh
-
+```
 
 ## Runing Through Docker
 
