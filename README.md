@@ -24,7 +24,7 @@ Before we run the project, make sure that you are having MongoDB in your local s
 
 
 ## Project Architecture
-![image](https://user-images.githubusercontent.com/57321948/193536768-ae704adc-32d9-4c6c-b234-79c152f756c5.png)
+![image]()
 
 
 ### Step 1: Clone the repository
