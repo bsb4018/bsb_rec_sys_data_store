@@ -20,7 +20,7 @@ The solution creates a feature store using feast utilizing AWS Infrastructure
 
 
 ## How to run?
-Before we run the project, make sure that you are having MongoDB in your local system, with Compass since we are using MongoDB for some data storage. You also need AWS account to access the S3 service.
+Before we run the project, make sure that you are having MongoDB in your local system, with Compass since we are using MongoDB for some data storage. You also need AWS account to access S3, Redshift, Glue, DynamoDB Services. You also need to have terraform installed and configured
 
 
 ## Project Architecture
