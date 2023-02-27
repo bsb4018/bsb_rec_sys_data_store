@@ -16,6 +16,9 @@ The solution creates a feature store using feast utilizing AWS Infrastructure
 ## Infrastructure Required.
 
 1. AWS S3
+2. AWS Redshift
+3. AWS Glue
+4. AWS Dynamo DB
 2. Terraform
 
 
