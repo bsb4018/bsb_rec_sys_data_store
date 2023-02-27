@@ -29,7 +29,7 @@ Before we run the project, make sure that you are having MongoDB in your local s
 
 ### Step 1: Clone the repository
 ```bash
-git clone https://github.com/sethusaim/Sensor-Fault-Detection.git
+git clone https://github.com/bsb4018/bsb_rec_sys_data_store.git
 ```
 
 ### Step 2- Create a conda environment after opening the repository
@@ -77,7 +77,7 @@ export AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY>
 
 export AWS_REGION_NAME=<AWS_REGION_NAME>
 
-export MONGODB_URL="mongodb+srv://<username>:<password>@cluster.7eh1w4s.mongodb.net/?retryWrites=true&w=majority"
+export MONGODB_URL="mongodb+srv://<username>:<password>@cluster.3gdw4s.mongodb.net/?retryWrites=true&w=majority"
 ```
 
 
