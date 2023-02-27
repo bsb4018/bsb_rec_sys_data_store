@@ -24,7 +24,7 @@ Before we run the project, make sure that you are having MongoDB in your local s
 
 
 ## Project Architecture
-![image]()
+![image](https://github.com/bsb4018/bsb_rec_sys_data_store/blob/main/images/dcv22.drawio.png)
 
 
 ### Step 1: Clone the repository
