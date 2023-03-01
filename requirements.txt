@@ -19,5 +19,5 @@ pytest
 tox
 flake8
 psycopg2
-redshift-connector
+memory_profiler
 -e.

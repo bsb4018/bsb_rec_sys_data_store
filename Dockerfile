@@ -8,4 +8,4 @@ WORKDIR /app
 
 RUN pip install -r requirements.txt
 
-CMD ["/bin/bash","-c","./start.sh"]
+CMD ["time","/bin/bash","-c","./start.sh"]

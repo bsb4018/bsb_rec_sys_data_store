@@ -1,5 +1,5 @@
 #! /bin/bash
-python src/pipe/data_store_pipeline.py
+python -m memory_profiler src/pipe/data_store_pipeline.py
 cd infra/
 terraform plan -var="admin_password=anyPass1"
 terraform apply -var="admin_password=anyPass1" -auto-approve
@@ -15,4 +15,4 @@ feast apply
 CURRENT_TIME=$(date -u +"%Y-%m-%dT%H:%M:%S")
 feast materialize-incremental $(date -u +"%Y-%m-%dT%H:%M:%S")
 cd ..
-python src/pipe/data_sync_pipeline.py
+python -m memory_profiler src/pipe/data_sync_pipeline.py

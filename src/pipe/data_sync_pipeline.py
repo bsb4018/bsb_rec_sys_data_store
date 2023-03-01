@@ -1,4 +1,5 @@
 import os, sys
+from memory_profiler import profile
 from src.exception import DataException
 from src.logger import logging
 from src.components.data_storing_main import StoreDataCourse
@@ -12,7 +13,8 @@ class DataSyncPipeline:
             self.sync_data = DataSync()
         except Exception as e:
             raise DataException(e,sys)
-        
+
+    @profile    
     def run_data_sync_pipeline(self):
         try:
             logging.info("Starting the Feature Store Sync Pipeline")
