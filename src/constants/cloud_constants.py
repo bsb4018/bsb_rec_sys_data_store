@@ -1,4 +1,4 @@
-
+#Constants for AWS
 AWS_ACCESS_KEY_ID= "AWS_ACCESS_KEY_ID"
 AWS_SECRET_ACCESS_KEY = "AWS_SECRET_ACCESS_KEY"
 AWS_REGION_NAME = "AWS_REGION"
@@ -6,8 +6,8 @@ S3_TRAINING_BUCKET_NAME = "bsb4018-rec-sys-app"
 S3_FEATURE_REGISTRY_BUCKET_NAME = "bsb4018rec-sys-feastfs"
 S3_DATA_BUCKET_NAME = "rec-sys-data-store"
 
-
+#Constants for Mongo DB Atlas
 MONGODB_URL_KEY = "MONGO_DB_URL"
 MONGO_DATABASE_NAME = "rec_sys_db"
-MONGO_COLLECTION_NAME =  "courses_tagwise"         
+MONGO_COURSE_TAG_COLLECTION_NAME = "courses_tagwise"         
 MONGO_COURSES_COLLECTION_NAME = "course_name_id"
