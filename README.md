@@ -55,8 +55,9 @@ pip install -r requirements.txt
 Create three S3 bucket with unique names 
 Goto src/constants/cloud_constants.py and Replace the names accordingly
 
-Create another S3 bucket with with name bsb-4018-rec-sys-app-proj-<any-unique-key>
-Goto infra/main.tf and replace the name under "aws_s3_bucket_acl" resource
+Create another S3 bucket with with name <your-project-name>-<any-unique-key> 
+Goto infra/variables.tf and replace the name under variable "project_name" with <your-project-name>
+Goto infra/main.tf resource "aws_s3_bucket_acl" "feast_bucket" replace bucket = "${var.project_name}-<any-unique-key>"
 Create a database name dev under AWS GLUE CATALOG
 Get a note of the following
 AWS_ACCESS_KEY_ID
@@ -80,31 +81,17 @@ export AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY>
 
 export AWS_REGION_NAME=<AWS_REGION_NAME>
 
-export MONGODB_URL="mongodb+srv://<username>:<password>@cluster.3gdw4s.mongodb.net/?retryWrites=true&w=majority"
+export MONGODB_URL=""
 ```
 
 
-### Step 7 - Start locally
+### Step 7 - Start Building the Feature Store and Deploy Resources
 ```bash
-/bin/bash -c ./start.sh
+time /bin/bash -c ./start.sh
 ```
 
-### Step 8 - Stop locally
+### Step 8 - Delete and Remove the Feature Store and All Deployed Resources
 ```bash
-/bin/bash -c ./stop.sh
+time /bin/bash -c ./stop.sh
 ```
 
-## Runing Through Docker
-
-1. Check if the Dockerfile is available in the project directory
-
-2. Build the Docker image
-```
-docker build --build-arg AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID> --build-arg AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY> --build-arg AWS_REGION_NAME=<AWS_REGION_NAME> --build-arg MONGODB_URL=<MONGODB_URL> . 
-
-```
-
-3. Run the Docker image
-```
-docker run -d -p 8090:8090 <IMAGE_NAME>
-```

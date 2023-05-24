@@ -135,15 +135,7 @@ dmypy.json
 scripts/
 docs_and_images/
 notebooks/
-data/
-rec_sys_fs/
 logs/
-src/components/get_data.py
-src/components/store_data_aws.ipynb
-src/components/data_storing_api.py
-src/components/data_validation.py
-champion_stag/
-
 
 infra/.terraform
 infra/.terraform.lock.hcl
@@ -152,7 +144,6 @@ infra/terraform.tfstate.backup
 infra/.terraform.tfstate.lock.info
 feature_repo/data/
 feature_repo/registry.db
-data-entity/
 data-feature/courses_data.parquet
 data-feature/events_all.parquet
 data-feature/users_data.parquet
